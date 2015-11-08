@@ -160,6 +160,19 @@ def save_all_spec(folder_in):
             src_aper)
 
 
+def adapt_f0(src_f0, target_f0):
+    mean_s = src_f0[src_f0.nonzero()].mean()
+    mean_t = target_f0[target_f0.nonzero()].mean()
+
+    std_s = src_f0[src_f0.nonzero()].std()
+    std_t = target_f0[target_f0.nonzero()].std()
+
+    src_f0_new = src_f0.copy()
+    src_f0_new[src_f0.nonzero()] = (
+        src_f0_new[src_f0.nonzero()] - mean_s) * std_t / std_s + mean_t
+    return src_f0_new
+
+
 if __name__ == "__main__":
     # time python get_coefs.py --ifolder=data/DTW/src_audio --spec
     # time python get_coefs.py --ifolder=data/DTW/tgt_audio --spec
